@@ -17,7 +17,18 @@
 
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <h1>Post 1</h1>
+            @if(count($posts) > 0)
+                @foreach($posts as $post)
+                    <article>
+                        <header>
+                            <h1><a href="{{url('/blog/'. $post->date.'/'.preg_replace('/[\s_]/','-',$post->title))}}">{{$post->title}}</a></h1>
+                        </header>
+                    </article>
+
+                    @endforeach
+                @else
+                <h2>There is no posts</h2>
+            @endif
         </div>
 
         <div class="col-lg-2">

@@ -20,6 +20,7 @@ class CreatePostsTable extends Migration
             $table->text('content');
             $table->string('image');
             $table->integer('category_id')->nullable();
+            $table->date('date')->default(date('Y-m-d'));
             $table->timestamps();
         });
     }

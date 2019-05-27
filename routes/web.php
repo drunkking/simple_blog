@@ -11,8 +11,8 @@
 |
 */
 
-
-Route::get('/', 'HomePagesController@index');
+Route::get('/','HomePagesController@index');
+Route::get('/blog/{date}/{title}', 'HomePagesController@show');
 
 
 Auth::routes();

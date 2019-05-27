@@ -122,6 +122,7 @@ class PostsController extends Controller
             $post->image = $fileNameToStore;
         }
         $post->category_id = $request->input('category_id');
+        $post->tags()->attach($request->input('tags'));
         $post->content = $request->input('content');
         $post->save();
 
@@ -137,6 +138,7 @@ class PostsController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $post->tags()->detach();
         $post->delete();
 
         return redirect('/home/posts')->with('success','Post deleted');
