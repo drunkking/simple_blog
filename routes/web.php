@@ -17,8 +17,13 @@ Route::get('/', 'HomePagesController@index');
 
 Auth::routes();
 
-Route::resource('/home/categories','CategoriesController');
-Route::resource('/home/tags','TagsController');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    Route::resource('/home/posts','PostsController');
+    Route::resource('/home/categories','CategoriesController');
+    Route::resource('/home/tags','TagsController');
+});
 
 
 
