@@ -6,7 +6,7 @@
 
                 @foreach($categories as $category)
 
-                    <span><a class="badge badge-pill badge-success" href="/blog/{{$category->name}}">{{$category->name}}</a></span>
+                    <span><a class="badge badge-pill badge-success" href="/categories/{{$category->name}}">{{$category->name}}</a></span>
                 @endforeach
 
                 @endif
@@ -16,14 +16,13 @@
     <div class="card">
         <div class="card-header">Tags</div>
         <div class="card-body" style="font-size: 20px">
-            <a href="#"  style="font-size: 13px" class="badge badge-primary">Slike</a>
-            <a href="#" class="badge badge-primary">Primardsadasy</a>
-            <a href="#" class="badge badge-primary">Primary</a>
-            <a href="#" class="badge badge-primary">Primary</a>
-            <a href="#" class="badge badge-primary">Primary</a>
-            <a href="#" class="badge badge-primary">Primary</a>
-            <a href="#" class="badge badge-primary">Primary</a>
+         @if(count($tags))
 
+             @foreach($tags as $tag)
+                <a href="/tag/{{$tag->name}}" class="badge badge-primary">{{$tag->name}}</a>
+
+                @endforeach
+        @endif
         </div>
 
     </div>

@@ -2,7 +2,6 @@
 
 
 @section('content')
-
     @include('includes.jumbo')
     <div class="container">
         <div class="row justify-content-center">
@@ -17,16 +16,18 @@
                             <h4>{{$post->subtitle}}</h4>
                             {{ substr($post->content,0,400).'...'}}
                             <br><br>
-
-                            <p>{{$post->created_at->diffForHumans()}} </p>
-                            @foreach($post->tags as $tag)
-                                <p style="font-size:15px" class="badge badge-primary">{{$tag->name}}</p>
-                            @endforeach
                         </article>
+
+                        <p>{{$post->created_at->diffForHumans()}} </p>
+                        @foreach($post->tags as $tag)
+                            <p style="font-size:15px" class="badge badge-primary">{{$tag->name}}</p>
+                        @endforeach
                         <hr>
+
                     @endforeach
+
                 @else
-                    <h2>There is no posts with this category</h2>
+                    <h2>There is no posts with this tag</h2>
                 @endif
             </div>
 

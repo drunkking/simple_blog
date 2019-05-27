@@ -43,9 +43,9 @@ class HomePagesController extends Controller
             ->with('tags',$tags);
     }
 
-    public function postsWithCategory($categroy){
+    public function postsWithCategory($category_name){
 
-        $categroy = Category::where('name', $categroy)->first();
+        $categroy = Category::where('name', $category_name)->first();
 
         $posts = Post::where('category_id', $categroy->id)->get();
 
@@ -55,7 +55,36 @@ class HomePagesController extends Controller
             return view('homePages.postCategory')
                 ->with('posts', $posts)
                 ->with('categories', $categories)
-                ->with('tags',$tags);;
+                ->with('tags',$tags);
+
+    }
+
+    public function postsWithTag($tag_name){
+
+        $posts = Post::all();
+
+        $arr = [];
+
+        foreach($posts as $post){
+            foreach ($post->tags as $tag)
+            {
+                if($tag->name === $tag_name){
+                    $arr[] = $post;
+                }
+            }
+        }
+
+
+
+
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('homePages.postTag')
+            ->with('posts', $arr)
+            ->with('categories', $categories)
+            ->with('tags',$tags);
+
 
     }
 

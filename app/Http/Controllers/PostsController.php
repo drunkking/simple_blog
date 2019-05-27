@@ -91,10 +91,19 @@ class PostsController extends Controller
         $tags = Tag::pluck('name','id')->toArray();
         $post = Post::findOrFail($id);
 
+
+        $my_tags = array();
+
+        foreach ($post->tags as $tag) {
+            $my_tags= $tag->name;
+        }
+
+
         return view('posts.edit')
             ->with('post', $post)
             ->with('categories', $categories)
-            ->with('tags', $tags);
+            ->with('tags', $tags)
+            ->with('mytags', $my_tags);
     }
 
     /**

@@ -36,9 +36,11 @@
                 {{Form::select('category_id',[$post->category_id => $post->category->name] + $categories,null,['class' => 'form-control'])}}
             </div>
 
+
+
             <div class="form-group">
                 {{Form::label('tag','Tags')}}
-                {{Form::select('tags[]',$tags,null,['class'=> 'form-control','multiple' => 'multiple'])}}
+                {{Form::select('tags[]',[]+$tags,null,['class'=> 'form-control','multiple' => 'multiple'])}}
             </div>
 
             <div class="form-group">
