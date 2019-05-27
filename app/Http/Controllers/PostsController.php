@@ -7,6 +7,7 @@ use App\Category;
 use App\Tag;
 
 use App\Http\Requests\PostsRequest;
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -139,6 +140,11 @@ class PostsController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->tags()->detach();
+
+        if($post->image != 'empty.jpg'){
+            Storage::delete('public/storage/post_images'. $post->image);
+        }
+
         $post->delete();
 
         return redirect('/home/posts')->with('success','Post deleted');
