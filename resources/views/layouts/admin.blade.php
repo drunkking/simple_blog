@@ -23,7 +23,8 @@
 <div id="app">
 
     @include('includes.navbarAdmin')
-    <div class="container-full-bg">
+    @include('includes.msg')
+    <div class="container">
         @yield('content')
     </div>
 </div>

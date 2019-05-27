@@ -10,7 +10,9 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-
+                    <li><a href="/home/posts/" class="nav-link nav-item">Post</a></li>
+                    <li><a href="/home/categories/" class="nav-link nav-item">Category</a></li>
+                    <li><a href="/home/tags/" class="nav-link nav-item">Tag</a></li>
             </ul>
 
             <!-- Right Side Of Navbar -->

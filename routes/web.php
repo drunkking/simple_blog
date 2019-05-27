@@ -13,9 +13,11 @@
 
 
 Route::get('/', 'HomePagesController@index');
-Route::get('/admin', 'HomePagesController@admin');
+
 
 Auth::routes();
+
+Route::resource('/home/categories','CategoriesController');
 
 
 
