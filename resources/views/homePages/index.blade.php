@@ -4,9 +4,9 @@
 @section('content')
 
 @include('includes.jumbo')
-
+<div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
+        <div class="col-lg-9">
             @if(count($posts) > 0)
                 @foreach($posts as $post)
                     <article>
@@ -29,6 +29,8 @@
         </div>
 
             @include('includes.sidebar')
+    </div>
+
     </div>
 
 

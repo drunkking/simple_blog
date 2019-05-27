@@ -4,9 +4,9 @@
 @section('content')
 
   @include('includes.jumbo')
-
+  <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-6 pt-5">
+    <div class="col-lg-9 pt-5">
       @if($post)
         @foreach($post as $post_elem)
           <h1>{{$post_elem->title}}</h1>
@@ -26,6 +26,8 @@
     </div>
 
     @include('includes.sidebar')
+  </div>
+
 
 
   </div>

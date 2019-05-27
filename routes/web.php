@@ -13,7 +13,7 @@
 
 Route::get('/','HomePagesController@index');
 Route::get('/blog/{date}/{title}', 'HomePagesController@show');
-
+Route::get('/blog/{category}', 'HomePagesController@postsWithCategory');
 
 Auth::routes();
 

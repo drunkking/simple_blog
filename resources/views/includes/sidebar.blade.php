@@ -1,4 +1,4 @@
-<div class="col-lg-2">
+<div class="col-lg-3">
     <div class="card">
         <div class="card-header">Categories</div>
         <div class="card-body" style="font-size: 20px">
@@ -6,7 +6,7 @@
 
                 @foreach($categories as $category)
 
-                    <span><a class="badge badge-pill badge-success" href="">{{$category->name}}</a></span>
+                    <span><a class="badge badge-pill badge-success" href="/blog/{{$category->name}}">{{$category->name}}</a></span>
                 @endforeach
 
                 @endif
