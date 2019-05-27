@@ -13,7 +13,7 @@
 
 
 Route::get('/', 'HomePagesController@index');
-Route::get('/kjkszpj/aezakmi', 'HomePagesController@admin');
+Route::get('/admin', 'HomePagesController@admin');
 
 Auth::routes();
 
