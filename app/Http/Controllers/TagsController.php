@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
+use App\Tag;
+use App\Http\Requests\TagsRequest;
 
 class TagsController extends Controller
 {
@@ -13,7 +15,9 @@ class TagsController extends Controller
      */
     public function index()
     {
-        //
+        $tags = Tag::orderBy('name','desc')->get();
+        return view('tags.index')
+            ->with('tags', $tags);
     }
 
     /**
@@ -23,30 +27,24 @@ class TagsController extends Controller
      */
     public function create()
     {
-        //
+        return view('tags.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TagsRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TagsRequest $request)
     {
-        //
+        $tag = new Tag();
+        $tag->name = $request->input('name');
+        $tag->save();
+
+        return redirect('/home/tags')->with('success','Tag created');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -56,19 +54,27 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+
+        return view('tags.edit')
+            ->with('tag', $tag);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\TagsRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TagsRequest $request, $id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $tag->name = $request->input('name');
+        $tag->save();
+
+        return redirect('/home/tags')->with('success','Tag updated');
+
     }
 
     /**
@@ -79,6 +85,9 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+
+        return redirect('/home/tags')->with('success','Tag deleted');
     }
 }

@@ -18,6 +18,7 @@ Route::get('/', 'HomePagesController@index');
 Auth::routes();
 
 Route::resource('/home/categories','CategoriesController');
+Route::resource('/home/tags','TagsController');
 
 
 
