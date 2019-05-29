@@ -37,10 +37,31 @@
             </div>
 
 
-
             <div class="form-group">
-                {{Form::label('tag','Tags')}}
-                {{Form::select('tags[]',[]+$tags,null,['class'=> 'form-control','multiple' => 'multiple'])}}
+                {{Form::label('r_tag','Remaining Tags')}}
+                <br>
+                @foreach($tags as $tag)
+                    <div class="form-check form-check-inline">
+                        <input name="remaining_tags[]" class="form-check-input" type="checkbox" value="{{$tag->id}}">
+                        <label class="form-check-label">
+                            {{$tag->name}}
+                        </label>
+                    </div>
+                @endforeach
+
+            </div>
+
+            <div class="from-group">
+                {{Form::label('u_tag','Used Tags')}}
+                <br>
+                @foreach($postTags as $tag)
+                    <div class="form-check form-check-inline">
+                        <input name="used_tags[]" class="form-check-input" type="checkbox" value="{{$tag->id}}">
+                        <label class="form-check-label">
+                            {{$tag->name}}
+                        </label>
+                     </div>
+                @endforeach
             </div>
 
             <div class="form-group">

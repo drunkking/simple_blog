@@ -79,6 +79,16 @@ class PostsController extends Controller
         //
     }
 
+    public function postRemainingTags($id){
+
+        $tags = Tag::all();
+        $post = Post::findOrFail($id);
+
+        $diff = $tags->diff($post->tags);
+
+        return  $diff;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -88,23 +98,21 @@ class PostsController extends Controller
     public function edit($id)
     {
         $categories = Category::pluck('name','id')->toArray();
-        $tags = Tag::pluck('name','id')->toArray();
         $post = Post::findOrFail($id);
-
-
-        $my_tags = array();
+        $remainingTags = self::postRemainingTags($id);
+        $postTags = [];
 
         foreach ($post->tags as $tag) {
-            $my_tags= $tag->name;
+            $postTags[] = $tag;
         }
-
 
         return view('posts.edit')
             ->with('post', $post)
             ->with('categories', $categories)
-            ->with('tags', $tags)
-            ->with('mytags', $my_tags);
+            ->with('tags', $remainingTags)
+            ->with('postTags', $postTags);
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -126,14 +134,27 @@ class PostsController extends Controller
         }
 
         $post =  Post::findOrFail($id);
+
         $post->title = $request->input('title');
+
         $post->subtitle = $request->input('subtitle');
+
         if($request->hasFile('image')){
             $post->image = $fileNameToStore;
         }
+
         $post->category_id = $request->input('category_id');
-        $post->tags()->attach($request->input('tags'));
+
+        if($request->input('used_tags')) {
+            $post->tags()->detach($request->input('used_tags'));
+        }
+
+        if($request->input('remaining_tags')){
+            $post->tags()->attach($request->input('remaining_tags'));
+        }
+
         $post->content = $request->input('content');
+
         $post->save();
 
         return redirect('/home/posts')->with('success','Post updated');

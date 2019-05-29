@@ -14,12 +14,13 @@ class HomePagesController extends Controller
 
         $posts = Post::orderBy('created_at','desc')->paginate(7);
         $categories = Category::all();
-        $tags = Tag::all();
+        $allTags = Tag::all();
+
 
         return view('homePages.index')
             ->with('posts', $posts)
             ->with('categories', $categories)
-            ->with('tags',$tags);
+            ->with('tags',$allTags);
     }
 
     public function admin(){
@@ -56,36 +57,30 @@ class HomePagesController extends Controller
                 ->with('posts', $posts)
                 ->with('categories', $categories)
                 ->with('tags',$tags);
-
     }
+
 
     public function postsWithTag($tag_name){
 
         $posts = Post::all();
-
-        $arr = [];
+        $postsWithTag = [];
 
         foreach($posts as $post){
             foreach ($post->tags as $tag)
             {
                 if($tag->name === $tag_name){
-                    $arr[] = $post;
+                    $postsWithTag[] = $post;
                 }
             }
         }
-
-
-
 
         $categories = Category::all();
         $tags = Tag::all();
 
         return view('homePages.postTag')
-            ->with('posts', $arr)
+            ->with('posts', $postsWithTag)
             ->with('categories', $categories)
             ->with('tags',$tags);
-
-
     }
 
 }
