@@ -19,11 +19,11 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
+@include('includes.navbarGuest')
+@include('includes.jumbo')
 <body>
     <div id="app">
 
-            @include('includes.navbarGuest')
-        @include('includes.jumbo')
         <div class="container-full-bg">
             @yield('content')
         </div>
