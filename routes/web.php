@@ -16,7 +16,8 @@ Route::get('/blog/{date}/{title}', 'HomePagesController@show');
 Route::get('/categories/{category_name}', 'HomePagesController@postsWithCategory');
 Route::get('/tag/{tag_name}', 'HomePagesController@postsWithTag');
 
-Auth::routes(['register' => false]);
+//Auth::routes(['register' => false]);
+Auth::routes();
 
 
 Route::group(['middleware' => ['auth']], function () {

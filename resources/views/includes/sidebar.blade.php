@@ -20,7 +20,6 @@
 
              @foreach($tags as $tag)
                 <a href="/tag/{{$tag->name}}" class="badge badge-primary">{{$tag->name}}</a>
-
                 @endforeach
         @endif
         </div>
