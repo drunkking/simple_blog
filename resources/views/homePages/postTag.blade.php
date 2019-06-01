@@ -24,12 +24,8 @@
                                 <a style="font-size:14px" href="/tag/{{$tag->name}}" class="badge badge-primary">{{$tag->name}}</a>
                             @endforeach
                         </article>
-
-
                         <hr>
-
                     @endforeach
-
                 @else
                     <h2>There is no posts with this tag</h2>
                 @endif

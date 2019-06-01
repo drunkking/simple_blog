@@ -13,7 +13,6 @@
                             <header>
                                 <h1><a href="{{url('/blog/'. $post->date.'/'.preg_replace('/[\s_]/','-',$post->title))}}">{{$post->title}}</a></h1>
                             </header>
-
                             <h4>
                                 {{$post->subtitle}}
                                 <a href="/categories/{{$post->category->name}}" class="badge badge-success">{{$post->category->name}}</a>
