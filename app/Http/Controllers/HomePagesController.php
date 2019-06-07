@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ContactMessage;
+use App\Http\Requests\ContactMessageRequest;
 use App\Post;
 use App\Category;
 use App\Tag;
@@ -21,6 +23,23 @@ class HomePagesController extends Controller
             ->with('posts', $posts)
             ->with('categories', $categories)
             ->with('tags',$allTags);
+    }
+
+    public function contact(){
+
+        return view('homePages.contact');
+    }
+
+    public function storeMessage(ContactMessageRequest $request){
+
+        $contactMessage = new ContactMessage();
+
+        $contactMessage->email = $request->input('email');
+        $contactMessage->message = $request->input('message');
+        $contactMessage->save();
+
+        return redirect('/contact')->with('success','Message sent');
+
     }
 
     public function admin(){

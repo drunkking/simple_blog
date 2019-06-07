@@ -21,13 +21,20 @@
 </head>
 @include('includes.navbarGuest')
 @include('includes.jumbo')
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            @include('includes.msg')
+        </div>
+    </div>
+</div>
+
 <body>
     <div id="app">
-
         <div class="container-full-bg">
             @yield('content')
         </div>
-
     </div>
     @include('includes.footer')
 </body>

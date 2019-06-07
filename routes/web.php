@@ -12,9 +12,12 @@
 */
 
 Route::get('/','HomePagesController@index');
+Route::get('/contact','HomePagesController@contact');
+Route::post('/contact','HomePagesController@storeMessage');
 Route::get('/blog/{date}/{title}', 'HomePagesController@show');
 Route::get('/categories/{category_name}', 'HomePagesController@postsWithCategory');
 Route::get('/tag/{tag_name}', 'HomePagesController@postsWithTag');
+
 
 //Auth::routes(['register' => false]);
 Auth::routes();
@@ -25,6 +28,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/home/posts','PostsController');
     Route::resource('/home/categories','CategoriesController');
     Route::resource('/home/tags','TagsController');
+    Route::resource('/home/messages','ContactMessagesController');
 });
 
 

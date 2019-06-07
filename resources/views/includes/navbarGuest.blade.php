@@ -6,7 +6,10 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
             <a class="nav-item nav-link" href="/">Home </a>
+        </div>
 
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="/contact">Contact Me</a>
         </div>
     </div>
 </nav>

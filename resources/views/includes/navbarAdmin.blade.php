@@ -13,6 +13,8 @@
                     <li><a href="/home/posts/" class="nav-link nav-item">Post</a></li>
                     <li><a href="/home/categories/" class="nav-link nav-item">Category</a></li>
                     <li><a href="/home/tags/" class="nav-link nav-item">Tag</a></li>
+                     <li><a href="/home/messages/" class="nav-link nav-item">Messages</a></li>
+
             </ul>
 
             <!-- Right Side Of Navbar -->
