@@ -14,13 +14,15 @@
                                     <th>Content</th>
                                     <th>Created At</th>
                                     <th></th>
+                                    <th></th>
                                 </thead>
                                 <tbody>
                                     @foreach($contact_messages as $message)
                                         <tr>
                                             <td>{{$message->email}}</td>
-                                            <td>{{$message->message}}</td>  <!-- poor naming BAD BAD BAD CODE. change migration, message => content -->
+                                            <td>{{substr($message->content,0, 50).'...'}}</td>
                                             <td>{{$message->created_at}}</td>
+                                            <td><a href="/home/messages/{{$message->id}}" class="btn btn-success">Show Message</a></td>
                                             <td>
                                                 {!! Form::open(['action' => ['ContactMessagesController@destroy', $message->id], 'method' => 'POST']) !!}
                                                     {{Form::hidden('_method','DELETE')}}

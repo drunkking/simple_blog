@@ -35,7 +35,7 @@ class HomePagesController extends Controller
         $contactMessage = new ContactMessage();
 
         $contactMessage->email = $request->input('email');
-        $contactMessage->message = $request->input('message');
+        $contactMessage->content = $request->input('content');
         $contactMessage->save();
 
         return redirect('/contact')->with('success','Message sent');

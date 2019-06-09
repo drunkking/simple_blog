@@ -16,6 +16,15 @@ class ContactMessagesController extends Controller
             ->with('contact_messages', $contact_messages);
     }
 
+
+    public function show($id){
+
+        $contact_message = ContactMessage::findOrFail($id);
+
+        return view('messages.show')
+            ->with('contact_message', $contact_message);
+    }
+
     public function destroy($id){
 
         $contact_message = ContactMessage::findOrFail($id);

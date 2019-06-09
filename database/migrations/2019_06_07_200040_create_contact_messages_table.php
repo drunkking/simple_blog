@@ -16,7 +16,7 @@ class CreateContactMessagesTable extends Migration
         Schema::create('contact_messages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('email');
-            $table->mediumText('message');
+            $table->mediumText('content');
             $table->timestamps();
         });
     }
