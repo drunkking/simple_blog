@@ -7,27 +7,27 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-#Auto delovi
+# Auto delovi
 
-###Pocetna
+### Pocetna
 ![](slike/home.png)
 
 
-###Tag filter
+### Tag filter
 ![](slike/tagFilter.png)
 
 
-###Kategorija filter
+### Kategorija filter
 ![](slike/catFilter.png)
 
-###Pocetna admin
+### Pocetna admin
 ![](slike/admin.png)
 
-###Pocetna post
+### Pocetna post
 ![](slike/postHome.png)
 
-###Izmena post-a
+### Izmena post-a
 ![](slike/editPost.png)
 
-###Novi post
+### Novi post
 ![](slike/newPost.png)
