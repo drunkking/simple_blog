@@ -1,16 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\PostsRequest;
+
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Http\Requests\PostStoreRequest;
 
 use App\Post;
 use App\Category;
-use App\Tag;
 
-use App\Http\Requests\PostsRequest;
-use Illuminate\Support\Facades\Storage;
+
+
+
 
 class PostsController extends Controller
 {
+
+    private $postRepository;
+
+
+    public function __construct(PostRepositoryInterface $postRepository){
+        $this->postRepository = $postRepository;
+    }
+    
+
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +31,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
+        $posts = $this->postRepository->all();
 
         return view('posts.index')
             ->with('posts', $posts);
@@ -45,25 +58,15 @@ class PostsController extends Controller
      */
     public function store(PostsRequest $request)
     {
-        if($request->hasFile('image')){
-            $filenameWithExt = $request->file('image')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $fileNameToStore = $this->postRepository->imageCreateSetup($request);
 
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-            $path = $request->file('image')->storeAs('public/post_images', $fileNameToStore);
-        } else {
-            $fileNameToStore = 'empty.jpg';
-        }
-
-        $post = new Post;
-        $post->title = $request->input('title');
-        $post->subtitle = $request->input('subtitle');
-        $post->image = $fileNameToStore;
-        $post->category_id = $request->input('category_id');
-        $post->content = $request->input('content');
-        $post->save();
+        Post::create([
+            'title' => $request->input('title'),
+            'subtitle' => $request->input('subtitle'),
+            'image' => $fileNameToStore,
+            'category_id' => $request->input('category_id'),
+            'content' => $request->input('content')
+        ]);
 
         return redirect('/home/posts')->with('success','Post created');
     }
@@ -79,16 +82,6 @@ class PostsController extends Controller
         //
     }
 
-    public function postRemainingTags($id){
-
-        $tags = Tag::all();
-        $post = Post::findOrFail($id);
-
-        $diff = $tags->diff($post->tags);
-
-        return  $diff;
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -97,20 +90,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::pluck('name','id')->toArray();
-        $post = Post::findOrFail($id);
-        $remainingTags = self::postRemainingTags($id);
-        $postTags = [];
+        $data = $this->postRepository->edit($id);
 
-        foreach ($post->tags as $tag) {
-            $postTags[] = $tag;
-        }
-
-        return view('posts.edit')
-            ->with('post', $post)
-            ->with('categories', $categories)
-            ->with('tags', $remainingTags)
-            ->with('postTags', $postTags);
+        return view('posts.edit',$data);
     }
 
 
@@ -123,41 +105,10 @@ class PostsController extends Controller
      */
     public function update(PostsRequest $request, $id)
     {
-        if($request->hasFile('image')){
-            $filenameWithExt = $request->file('image')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+        $this->postRepository->update($request,$id);
 
-            $extension = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-            $path = $request->file('image')->storeAs('public/post_images', $fileNameToStore);
-        }
-
-        $post =  Post::findOrFail($id);
-
-        $post->title = $request->input('title');
-
-        $post->subtitle = $request->input('subtitle');
-
-        if($request->hasFile('image')){
-            $post->image = $fileNameToStore;
-        }
-
-        $post->category_id = $request->input('category_id');
-
-        if($request->input('used_tags')) {
-            $post->tags()->detach($request->input('used_tags'));
-        }
-
-        if($request->input('remaining_tags')){
-            $post->tags()->attach($request->input('remaining_tags'));
-        }
-
-        $post->content = $request->input('content');
-
-        $post->save();
-
-        return redirect('/home/posts')->with('success','Post updated');
+        return redirect('/home/posts')
+            ->with('success','Post updated');
     }
 
     /**
@@ -168,15 +119,9 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
-        $post->tags()->detach();
+        $this->postRepository->delete($id);
 
-        if($post->image != 'empty.jpg'){
-            Storage::delete('public/storage/post_images'. $post->image);
-        }
-
-        $post->delete();
-
-        return redirect('/home/posts')->with('success','Post deleted');
+        return redirect('/home/posts')
+            ->with('success','Post deleted');
     }
 }

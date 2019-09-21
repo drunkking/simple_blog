@@ -48,7 +48,10 @@ class HomePagesController extends Controller
 
     public function show($time, $title){
 
-        $title = preg_replace('/[\s_-]/',' ',$title);
+ 
+        $title = preg_replace('/[\s-_]/',' ',$title);
+
+     
 
         $post = DB::table('posts')
             ->where(['date' => $time, 'title' => $title])
