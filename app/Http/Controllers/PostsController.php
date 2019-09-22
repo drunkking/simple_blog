@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostsRequest;
 
 use App\Repositories\Interfaces\PostRepositoryInterface;
-use App\Http\Requests\PostStoreRequest;
 
 use App\Post;
 use App\Category;
-
-
 
 
 
@@ -68,7 +65,8 @@ class PostsController extends Controller
             'content' => $request->input('content')
         ]);
 
-        return redirect('/home/posts')->with('success','Post created');
+        return redirect('/home/posts')
+            ->with('success','Post created');
     }
 
     /**

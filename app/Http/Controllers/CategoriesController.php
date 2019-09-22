@@ -1,13 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Category;
 use App\Http\Requests\CategoriesRequest;
 
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+
+use App\Category;
 
 class CategoriesController extends Controller
 {
+
+    private $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository){
+        $this->categoryRepository = $categoryRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +23,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $categories = Category::orderBy('name','desc')->get();
+        $categories = $this->categoryRepository->all();
+
         return view('categories.index')
             ->with('categories', $categories);
     }
@@ -38,11 +47,12 @@ class CategoriesController extends Controller
      */
     public function store(CategoriesRequest $request)
     {
-        $category = new Category();
-        $category->name = $request->input('name');
-        $category->save();
+        Category::create([
+            'name' => $request->input('name')
+        ]);
 
-        return redirect('/home/categories')->with('success','Category created');
+        return redirect('/home/categories')
+            ->with('success','Category created');
     }
 
 
@@ -54,7 +64,8 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
+        $category = $this->categoryRepository->get($id);
+        
         return view('categories.edit')
             ->with('category', $category);
     }
@@ -68,11 +79,10 @@ class CategoriesController extends Controller
      */
     public function update(CategoriesRequest $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $category->name = $request->input('name');
-        $category->save();
+        $this->categoryRepository->update($request, $id);
 
-        return redirect('/home/categories')->with('success','Category updated');
+        return redirect('/home/categories')
+            ->with('success','Category updated');
     }
 
     /**
@@ -83,9 +93,9 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
-
-        return redirect('/home/categories')->with('success','Category deleted');
+        $this->categoryRepository->delete($id);
+        
+        return redirect('/home/categories')
+            ->with('success','Category deleted');
     }
 }

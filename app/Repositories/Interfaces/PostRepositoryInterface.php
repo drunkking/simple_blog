@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Repositories\Interfaces;
-
-
 use App\Post;
+
 
 interface PostRepositoryInterface {
     

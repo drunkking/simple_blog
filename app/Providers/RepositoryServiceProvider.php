@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Repositories\PostRepository;
 use App\Repositories\Interfaces\PostRepositoryInterface;
+
+use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -18,6 +22,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             PostRepositoryInterface::class, 
             PostRepository::class
+        );
+
+        $this->app->bind(
+            CategoryRepositoryInterface::class, 
+            CategoryRepository::class
         );
     }
 
