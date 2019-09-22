@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Post;
 use App\Tag;
 use App\Category;
+use Illuminate\Support\Facades\DB;
 
 
 class PostRepository implements PostRepositoryInterface {
@@ -17,6 +18,63 @@ class PostRepository implements PostRepositoryInterface {
 
     public function get($post_id){
         return Post::findOrFail($post_id);
+    }
+
+    public function getTimeTitle($time, $title){
+
+        $post = DB::table('posts')
+            ->where(['date' => $time, 'title' => $title])
+            ->get();
+
+        return $post;
+    }
+
+    public function postsWithCategory($category_name){
+
+        $categroy = Category::where('name', $category_name)->first();
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        if ($categroy) {
+            $posts = Post::where('category_id', $categroy->id)->get();
+
+            $data = [
+                'posts' => $posts,
+                'categories' => $categories,
+                'tags' => $tags
+            ];
+
+            return $data;
+
+        } else {
+            abort(404);
+        }
+    }
+
+    public function postsWithTag($tag_name){
+
+        $posts = Post::all();
+        $postsWithTag = [];
+
+        foreach($posts as $post){
+            foreach ($post->tags as $tag)
+            {
+                if($tag->name === $tag_name){
+                    $postsWithTag[] = $post;
+                }
+            }
+        }
+
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        $data = [
+            'posts' => $postsWithTag,
+            'categories' => $categories,
+            'tags' => $tags
+        ];
+
+        return $data;
     }
 
     

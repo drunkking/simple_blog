@@ -9,6 +9,12 @@ interface PostRepositoryInterface {
     public function all();
 
     public function get($post_id);
+
+    public function getTimeTitle($time, $title);
+
+    public function postsWithCategory($category_name);
+
+    public function postsWithTag($tag_name);
     
     public function imageCreateSetup($request);
 

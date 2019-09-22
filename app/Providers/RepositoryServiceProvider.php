@@ -11,6 +11,9 @@ use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\TagRepository;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 
+use App\Repositories\HomePageRepository;
+use App\Repositories\Interfaces\HomePageRepositoryInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -35,6 +38,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             TagRepositoryInterface::class, 
             TagRepository::class
+        );
+
+        $this->app->bind(
+            HomePageRepositoryInterface::class, 
+            HomePageRepository::class
         );
     }
 

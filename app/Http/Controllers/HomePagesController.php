@@ -2,27 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Interfaces\PostRepositoryInterface;
+use App\Repositories\Interfaces\TagRepositoryInterface;
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+
 use App\ContactMessage;
 use App\Http\Requests\ContactMessageRequest;
-use App\Post;
-use App\Category;
-use App\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
+
 
 class HomePagesController extends Controller
 {
+
+    private $postRepository;
+    private $tagRepositroy;
+    private $categoryRepository;
+
+    public function __construct(PostRepositoryInterface $postRepository,
+                                TagRepositoryInterface $tagRepositroy,
+                                CategoryRepositoryInterface $categoryRepository){
+
+        $this->postRepository = $postRepository;
+        $this->tagRepository = $tagRepositroy;
+        $this->categoryRepository = $categoryRepository;
+    }
+
     public function index(){
 
-        $posts = Post::orderBy('created_at','desc')->paginate(7);
-        $categories = Category::all();
-        $allTags = Tag::all();
+        $data = [
+            'posts' => $this->postRepository->all(),
+            'categories' => $this->categoryRepository->all(),
+            'tags' => $this->tagRepository->all()
+        ];
 
 
-        return view('homePages.index')
-            ->with('posts', $posts)
-            ->with('categories', $categories)
-            ->with('tags',$allTags);
+        return view('homePages.index', $data);
     }
 
     public function contact(){
@@ -32,13 +47,13 @@ class HomePagesController extends Controller
 
     public function storeMessage(ContactMessageRequest $request){
 
-        $contactMessage = new ContactMessage();
+        ContactMessage::create([
+            'email' => $request->input('email'),
+            'content' => $request->input('content')
+        ]);
 
-        $contactMessage->email = $request->input('email');
-        $contactMessage->content = $request->input('content');
-        $contactMessage->save();
-
-        return redirect('/contact')->with('success','Message sent');
+        return redirect('/contact')
+            ->with('success','Message sent');
 
     }
 
@@ -48,64 +63,31 @@ class HomePagesController extends Controller
 
     public function show($time, $title){
 
- 
-        $title = preg_replace('/[\s-_]/',' ',$title);
+        $title =  preg_replace('/[\s-_]/',' ',$title);
+        $data = [
+            'post' => $this->postRepository->getTimeTitle($time, $title),
+            'categories' => $this->categoryRepository->all(),
+            'tags' => $this->tagRepository->all()
+        ];
 
-     
-
-        $post = DB::table('posts')
-            ->where(['date' => $time, 'title' => $title])
-            ->get();
-
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        return view('homePages.show')
-            ->with('post', $post)
-            ->with('categories', $categories)
-            ->with('tags',$tags);
+        return view('homePages.show', $data)
+            ->with('title',$title);
     }
 
     public function postsWithCategory($category_name)
     {
+        $data =  $this->postRepository->postsWithCategory($category_name);
 
-        $categroy = Category::where('name', $category_name)->first();
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        if ($categroy) {
-            $posts = Post::where('category_id', $categroy->id)->get();
-            return view('homePages.postCategory')
-                ->with('posts', $posts)
-                ->with('categories', $categories)
-                ->with('tags', $tags);
-        } else {
-            abort(404);
-        }
+        return view('homePages.postCategory', $data);
     }
 
 
     public function postsWithTag($tag_name){
 
-        $posts = Post::all();
-        $postsWithTag = [];
+        $data = $this->postRepository->postsWithTag($tag_name);
 
-        foreach($posts as $post){
-            foreach ($post->tags as $tag)
-            {
-                if($tag->name === $tag_name){
-                    $postsWithTag[] = $post;
-                }
-            }
-        }
+        return view('homePages.postTag', $data);
 
-        $categories = Category::all();
-        $tags = Tag::all();
-
-        return view('homePages.postTag')
-            ->with('posts', $postsWithTag)
-            ->with('categories', $categories)
-            ->with('tags',$tags);
     }
 
 }
