@@ -8,6 +8,9 @@ use App\Repositories\Interfaces\PostRepositoryInterface;
 use App\Repositories\CategoryRepository;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 
+use App\Repositories\TagRepository;
+use App\Repositories\Interfaces\TagRepositoryInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -27,6 +30,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             CategoryRepositoryInterface::class, 
             CategoryRepository::class
+        );
+
+        $this->app->bind(
+            TagRepositoryInterface::class, 
+            TagRepository::class
         );
     }
 

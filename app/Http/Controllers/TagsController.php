@@ -2,12 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\Interfaces\TagRepositoryInterface;
 
 use App\Tag;
 use App\Http\Requests\TagsRequest;
 
 class TagsController extends Controller
 {
+
+    private $tagRepository;
+
+
+    public function __construct(TagRepositoryInterface $tagRepository){
+        $this->tagRepository = $tagRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +24,7 @@ class TagsController extends Controller
      */
     public function index()
     {
-        $tags = Tag::orderBy('name','desc')->get();
+        $tags = $this->tagRepository->all();
         return view('tags.index')
             ->with('tags', $tags);
     }
@@ -38,11 +47,12 @@ class TagsController extends Controller
      */
     public function store(TagsRequest $request)
     {
-        $tag = new Tag();
-        $tag->name = $request->input('name');
-        $tag->save();
+        Tag::create([
+            'name' => $request->input('name')
+        ]);
 
-        return redirect('/home/tags')->with('success','Tag created');
+        return redirect('/home/tags')
+            ->with('success','Tag created');
     }
 
 
@@ -54,7 +64,7 @@ class TagsController extends Controller
      */
     public function edit($id)
     {
-        $tag = Tag::findOrFail($id);
+        $tag = $this->tagRepository->get($id);
 
         return view('tags.edit')
             ->with('tag', $tag);
@@ -69,12 +79,10 @@ class TagsController extends Controller
      */
     public function update(TagsRequest $request, $id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->name = $request->input('name');
-        $tag->save();
+        $this->tagRepository->update($request, $id);
 
-        return redirect('/home/tags')->with('success','Tag updated');
-
+        return redirect('/home/tags')
+            ->with('success','Tag updated');
     }
 
     /**
@@ -85,9 +93,9 @@ class TagsController extends Controller
      */
     public function destroy($id)
     {
-        $tag = Tag::findOrFail($id);
-        $tag->delete();
+        $this->tagRepository->delete($id);
 
-        return redirect('/home/tags')->with('success','Tag deleted');
+        return redirect('/home/tags')
+            ->with('success','Tag deleted');
     }
 }
